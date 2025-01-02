@@ -1,1 +1,4 @@
-# convex-dev
+= convex-tech
+
+Convex (distributed ledger) based technology (dApps, tools and examples).
+

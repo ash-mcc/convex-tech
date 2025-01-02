@@ -1,0 +1,8 @@
+.cache/
+.calva/
+.cpcache/
+.lsp/
+.nrepl-port
+notes.txt
+public/convex-dev/
+tmp/
