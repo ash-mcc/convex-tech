@@ -3,7 +3,8 @@
 
 
 (def markets
-  "Queries for data about the Torus markets."
+  "Queries for data about the Torus markets.
+   TODO: Pagination."
   '(do
      (import convex.asset :as asset)
      (import torus.exchange :as torus)
