@@ -4,7 +4,7 @@
 
 (def api
   "URL for the remote Convex system's REST API"
-  "http://peer.convex.live:8080/api")
+  "https://peer.convex.live:8080/api")
 
 (def addr
   "Genesis peer controller account"
