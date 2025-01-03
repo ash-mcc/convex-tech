@@ -1,5 +1,0 @@
-= convex-tech
-
-Convex (distributed ledger) based technology (dApps, tools and examples).
-
-Convex Torus markets app:: This app displays data about the Torus markets data that is on the Convex distributed ledger. You can run this app by clicking &gt;https://ash-mcc.github.io/convex-tech/torus-markets.html[here]&lt;.
