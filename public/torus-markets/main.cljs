@@ -47,13 +47,16 @@
                                                                      [:price "right"] [:buy-quote "right"] [:sell-quote "right"]])
         tdata                                               (->> torus-markets
                                                                  (sort-by :market-addr)
-                                                                 ;; Format the desc as a tooltip.
                                                                  (map (fn [m] 
-                                                                        (assoc m :token-name [:span.tooltip {:data-tooltip (:token-desc m)} (:token-name m)])))
-                                                                 ;; Format number values.
-                                                                 (map (fn [m]
-                                                                        (zipmap (keys m)
-                                                                                (map #(if (number? %) (util/fmt-num %) %) (vals m))))))]
+                                                                        (assoc m 
+                                                                               ;; Format the desc as a tooltip.
+                                                                               :token-name [:span.tooltip {:data-tooltip (:token-desc m)} (:token-name m)]
+                                                                               ;; Format number values.
+                                                                               :pool-cvm (let [x (:pool-cvm m)] (if (number? x) (util/fmt-int x) x))
+                                                                               :pool-token (let [x (:pool-token m)] (if (number? x) (util/fmt-int x) x))
+                                                                               :price (let [x (:price m)] (if (number? x) (util/fmt-dec x) x))
+                                                                               :buy-quote (let [x (:buy-quote m)] (if (number? x) (util/fmt-dec x) x))
+                                                                               :sell-quote (let [x (:sell-quote m)] (if (number? x) (util/fmt-dec x) x))))))]
     [:article
      [:table
       [:thead

@@ -8,11 +8,15 @@
     (js/Math.ceil x)
     (js/Math.floor x)))
  
-(defn fmt-num 
+(defn fmt-dec
   [x]
   (let [int-part (truncate x)
         dec-part (- x int-part)]
     (cl-format nil "~:d~0,2f" int-part dec-part)))
+
+(defn fmt-int
+  [x]
+  (cl-format nil "~:d" x))
 
 (defn red
   [s]
