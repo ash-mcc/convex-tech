@@ -7,6 +7,7 @@
    but the idea was to provide a structure for future dev-ing."
   (:require [reagent.dom :as rdom]
             [re-frame.core :as rf]
+            [cljs.pprint :refer [pprint]]
             [config]
             [subscription :refer [listen]]
             [event]
@@ -18,9 +19,9 @@
   []
   [:header
    [:nav
-    [:a {:href "torus-markets.html"} [:img {:alt    "Logo"
-                                            :src    "icon.png"
-                                            :height "50"}]]
+    [:a {:href "https://github.com/ash-mcc"} [:img {:alt    "Ash"
+                                                    :src    "ash-mcc.png"
+                                                    :height "30"}]]
     [:span "Convex Torus markets"]
     [:span \u00A0]]])
 
@@ -38,20 +39,21 @@
 
 (defn- markets
   []
-  (let [{:keys [timestamp torus-markets]} (listen [:markets])
-        cols                              (concat [[:token-name "left"] [:token-addr "right"]
-                                                   [:market-addr "right"]
-                                                   [:pool-cvm "right"] [:pool-token "right"]
-                                                   [:price "right"] [:buy-quote "right"] [:sell-quote "right"]])
-        tdata                             (->> torus-markets
-                                               (sort-by :market-addr)
-                                               ;; Format the desc as a tooltip.
-                                               (map (fn [m] 
-                                                      (assoc m :token-name [:span.tooltip {:data-tooltip (:token-desc m)} (:token-name m)])))
-                                               ;; Format number values.
-                                               (map (fn [m]
-                                                      (zipmap (keys m)
-                                                              (map #(if (number? %) (util/fmt-num %) %) (vals m))))))]
+  (let [{:keys [timestamp torus-markets]
+         :as   markets-data} (listen [:markets])
+        cols                                                (concat [[:token-name "left"] [:token-addr "right"]
+                                                                     [:market-addr "right"]
+                                                                     [:pool-cvm "right"] [:pool-token "right"]
+                                                                     [:price "right"] [:buy-quote "right"] [:sell-quote "right"]])
+        tdata                                               (->> torus-markets
+                                                                 (sort-by :market-addr)
+                                                                 ;; Format the desc as a tooltip.
+                                                                 (map (fn [m] 
+                                                                        (assoc m :token-name [:span.tooltip {:data-tooltip (:token-desc m)} (:token-name m)])))
+                                                                 ;; Format number values.
+                                                                 (map (fn [m]
+                                                                        (zipmap (keys m)
+                                                                                (map #(if (number? %) (util/fmt-num %) %) (vals m))))))]
     [:article
      [:table
       [:thead
@@ -61,9 +63,10 @@
                 [:tr (for [[k ta] cols]
                        [:td {:style {:text-align ta}} (k m)])])]]
      [:p [:small "Convex timestamp: " (util/fmt-date (js/Date. timestamp)) [:br] 
+          "Download as an: " [:a {:href     (js/encodeURI (str "data:application/edn;charset=utf-8," (with-out-str (pprint markets-data))))
+                                  :download "torus-markets-data.edn"} "EDN data file"] [:br]
           "Convex API URL: " config/api [:br]
-          "Convex info: " [:a {:href   config/info
-                               :target "_blank"} config/info]]]]))
+          "Convex info: " [:a {:href config/info} config/info]]]]))
 
 (defn root
   []
@@ -80,6 +83,4 @@
                  (rf/dispatch [:initialise-db])
                  (rf/dispatch [:fetch-markets])
                  (.getElementById js/document "app")))
-
-
 
