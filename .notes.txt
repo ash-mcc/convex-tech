@@ -1,0 +1,41 @@
+----------------------------------------------------------------
+
+To publish as https://ash-mcc.github.io/convex-tech
+
+After checking-in the master branch
+and running:   < commands needed to build/generate stuff in the public dir >
+
+The contents of the public dir should be for the contents of the gh-pages branch
+
+Then checkout the gh-pages branch
+
+On the gh-pages branch
+do:         cp -R public/* ./
+            rm -r public
+
+
+And check-in those changes to the gh-pages branch
+
+
+----------------------------------------------------------------
+
+To serve locally
+
+python3 -m http.server 3000 --directory public
+
+
+----------------------------------------------------------------
+
+To update gh-pages
+
+On the master branch (in this, the root dir of the repo)
+do:         git checkout gh-pages   # checkout to gh-pages branch
+            git rebase master       # bring gh-pages up to date with master
+            rm ./*                  # delete files that are not under public/
+            mv public/* ./          # move the files that are under public/ to be at the root
+            rmdir public            # delete public/
+            git add .
+            git commit -m "updated from master"
+            git push
+            git checkout master     # return to the master branch
+
